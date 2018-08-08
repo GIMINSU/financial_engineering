@@ -169,3 +169,28 @@ print(p)
 dates = source.find_all('td', class_='date')
 prices = source.find_all('td', class_ = 'number_1')
 print('date and price \n', dates, prices)
+
+# data 개수 확인
+## 날짜 개수 확인
+print(len(dates))
+## 지수 개수 확인
+print(len(prices))
+
+'''
+지수 개수가 더 많은 이유
+크롬으로 돌아가 소스코드를 다시 봄
+소스 코드를 보면 <td class='number_1'> code가 4개 보임 마우스로 각 tag들을 가리켜 보면 체결가 등락률, 
+거래량, 거래대금이 모두 같은 tag를 사용함
+이 4개의 값 중 첫 번째 값만 필요하므로 0, 4, 8 과 같은 4의 배수로 나타나는 값들만 추출한다.
+테이블의 날짜를 한줄씩 순환하며 날짜와 종가지수를 추출한다.
+'''
+
+for n in range(len(dates)): # dates 개수만큼 반복
+    this_date = dates[n].next # n번째 dates 값 추출
+    this_date = date_format(this_date) # 날짜 형식으로 변환
+
+    this_close = prices[n*4].text
+    # 0, 4, 8 등 4의 배수에 해당하는 종가지수 추출
+    this_close = this_close.replace(',', '') # 쉼표(,) wprj
+    this_close = float(this_close) # 소수점 있는 숫자 형식으로 변환
+    print(this_date, this_close)  # 결과값 출력
