@@ -194,3 +194,82 @@ for n in range(len(dates)): # dates 개수만큼 반복
     this_close = this_close.replace(',', '') # 쉼표(,) wprj
     this_close = float(this_close) # 소수점 있는 숫자 형식으로 변환
     print(this_date, this_close)  # 결과값 출력
+'''
+코스피200 -> 일별시세 -> 맨뒤 -> 오른쪽 클릭 -> 검사 클릭
+
+<td class="pgRR">
+    <a href="/sise/sise index day.nhn?
+    code=KPI200&page=520">...</a> == $0
+    
+마지막 페이지 주소를 가리키는 하이퍼링크 <a> tag는 <td class="pgRR"> tag다. 그러면 다음과 같이 하이퍼링크 주소를 뽑아올 수 있다
+'''
+
+paging = source.find('td', class_='pgRR').find('a')['href']
+print(paging)
+
+# 뽑아온 하이퍼링크 주소에서 페이지 번호만 추출하기 위해 &를 기준으로 문자열을 잘라내 뒷부분만 가져옴
+paging = paging.split('&')[1]
+print(paging)
+
+# =을 기준으로 한번 더 잘라낸다.
+paging = paging.split('=')[1]
+print(paging)
+
+# 뽑아온 페이지 번호를 숫자형식으로 바꿔준다.
+last_page = source.find('td', class_='pgRR').find('a')['href']
+last_page = last_page.split('&')[1]
+last_page = last_page.split('=')[1]
+last_page = int(last_page)
+print(last_page)
+
+# 데이터 추출 기능을 함수로 만들기
+def historical_index_naver(index_cd, start_date, end_date, page_n=1, last_page=0):
+
+    if start_date:
+        start_date = date_format(start_date)
+    else:
+        start_date = dt.date.today()
+    if end_date:
+        end_date = date_format(end_date)
+    else:
+        end_date = dt.date.today()
+    naver_index = 'http://finance.naver.com/sise/sise_index_day.nhn?code=' + index_cd + '&page=' +str(page_n)
+
+    source = urlopen(naver_index).read() # 지정한 페이지에서 코드 읽기
+    source = bs4.BeautifulSoup(source, 'lxml') # BeautifulSoup를 이용해 tag별로 code 분류
+
+    dates = source.find_all('td', class_='date') # <td class="date"> tag에서 날짜 수집
+    prices = source.find_all('td', class_='number_1') # <td class="number_1> tag에서 지수 수집
+
+    historical_prices = dict()
+    for n in range(len(dates)):
+        if dates[n].text.split('.')[0].isdigit():
+            # 날짜 처리
+            this_date = dates[n].text
+            this_date=date_format(this_date)
+
+            # 종가 처리
+            this_close = prices[n*4].text # price 중 종가지수인 0, 4, 8... 번째 데이터 추출
+            this_close = this_close.replace(',', '')
+            this_close = float(this_close)
+
+            # dictionary에 저장
+            historical_prices[this_date] = this_close
+
+    # 페이지 네비게이션
+    if last_page == 0:
+        last_page= source.find('td', class_='pgRR').find('a')['href']
+        # 마지막 페이지 주소 추출
+        last_page = last_page.split('&')[1]
+        last_page = last_page.split('=')[1]
+        last_page = int(last_page)
+
+    # 다음 페이지 호출
+    if page_n < last_page:
+        page_n = page_n +1
+        historical_index_naver(index_cd, start_date, end_date, page_n, last_page)
+    return historical_prices
+
+index_cd = 'KPI200'
+
+print(historical_index_naver(index_cd, '2018-4-1', '2018-4-4'))
