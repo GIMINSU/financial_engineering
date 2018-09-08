@@ -209,11 +209,11 @@ print(paging)
 
 # 뽑아온 하이퍼링크 주소에서 페이지 번호만 추출하기 위해 &를 기준으로 문자열을 잘라내 뒷부분만 가져옴
 paging = paging.split('&')[1]
-print(paging)
+print('paging', paging)
 
 # =을 기준으로 한번 더 잘라낸다.
 paging = paging.split('=')[1]
-print(paging)
+print('paging', paging)
 
 # 뽑아온 페이지 번호를 숫자형식으로 바꿔준다.
 last_page = source.find('td', class_='pgRR').find('a')['href']
