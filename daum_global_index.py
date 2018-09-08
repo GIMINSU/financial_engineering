@@ -1,0 +1,1 @@
+url = 'http://finance.daum.net/global/index_daily.daum?type=default&ric=/.GSPC&page=1'
