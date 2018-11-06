@@ -9,7 +9,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neighbors import KNeighborsRegressor
 
-class reinforcement_learning():
+class ReinforcementLearning():
 
     def forge(self):
         X, y = mglearn.datasets.make_forge()
@@ -126,9 +126,9 @@ class reinforcement_learning():
 
 
 
-# reinforcement_learning().breast_cancer()
-# reinforcement_learning().KNN_example()
-# reinforcement_learning().KNN_train_test()
-# reinforcement_learning().KNeighborsclassifier()
-# reinforcement_learning().breast_cancer_train_test()
-reinforcement_learning().k_neighbors_regression()
+# ReinforcementLearning().breast_cancer()
+# ReinforcementLearning().KNN_example()
+# ReinforcementLearning().KNN_train_test()
+# ReinforcementLearning().KNeighborsclassifier()
+# ReinforcementLearning().breast_cancer_train_test()
+ReinforcementLearning().k_neighbors_regression()
