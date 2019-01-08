@@ -76,7 +76,7 @@ class LinearModel():
             mglearn.plots.plot_2d_separator(clf, X, fill=False, eps=0.5, ax=ax, alpha=0.7)
             mglearn.discrete_scatter(X[:, 0], X[:, 1], y, ax=ax)
             ax.set_title("{}".format(clf.__class__.__name__))
-            ax.set_xlabel("feature 0 ")
+            ax.set_xlabel("feature 0")
             ax.set_ylabel("feature 1")
         axes[0].legend()
 

@@ -70,7 +70,7 @@ def date_format(d):
 
 # git 복사해온 코드
 historical_prices = dict()
-def historical_index_naver(index_cd, start_date='', end_date='', page_n=1, last_page=0):
+def historical_index_naver(index_cd, start_date, end_date, page_n=1, last_page=0):
     if start_date:  # start_date가 있으면
         start_date = date_format(start_date)  # date 포맷으로 변환
     else:  # 없으면
@@ -126,5 +126,5 @@ def historical_index_naver(index_cd, start_date='', end_date='', page_n=1, last_
     return historical_prices
 
 index_cd = 'KPI200'
-historical_index_naver(index_cd, '2018-4-1', '2018-4-4')
+historical_index_naver(index_cd, '2019-1-2', '2019-1-8')
 print(historical_prices)
